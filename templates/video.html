@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <div class="flex w-full justify-center">
+    <div class="max-w-3xl w-full bg-slate-800 pb-8 px-8">
+      <h2 class="text-3xl font-bold my-6 mb-4 text-center">Merge Videos</h2>
+      <!-- Initial video form -->
+      <form class="mt-6 mb-10" action="/" onsubmit="(e) => e.preventDefault();">
+        <h3 class="text-2xl font-semibold mb-3">Select the first video</h3>
+        <label for="initialvideo" id="dropfield" class="w-full aspect-video rounded-3xl border-4 border-slate-500 border-dashed flex items-center justify-center cursor-pointer">
+          <div id="initialinfo" class="flex items-center gap-1">
+            <img class="w-8 h-8" src="/static/document.svg" alt="document_svg">
+            <div class="text-2xl font-medium">Select a video</div>
+          </div>
+        </label>
+        <input 
+          type="file"
+          accept="video/*"
+          name="initialvideo" 
+          id="initialvideo"
+          class="hidden"
+        >
+      </form>
+      <!-- Second form to select other video to merge -->
+      <form class="mt-6 mb-10" action="/" onsubmit="(e) => e.preventDefault();">
+        <h3 class="text-2xl font-semibold mb-3">Select the second video</h3>
+        <label for="secondvideo" id="dropfield" class="w-full aspect-video rounded-3xl border-4 border-slate-500 border-dashed flex items-center justify-center cursor-pointer">
+          <div id="initialinfo" class="flex items-center gap-1">
+            <img class="w-8 h-8" src="/static/document.svg" alt="document_svg">
+            <div class="text-2xl font-medium">Select a video</div>
+          </div>
+        </label>
+        <input 
+          type="file"
+          accept="video/*"
+          name="secondvideo" 
+          id="secondvideo"
+          class="hidden"
+        >
+      </form>
+      <!-- Merge and download the video -->
+      <form action="/" onsubmit="(e) => e.preventDefault();">
+        <div class="flex justify-center">
+          <button class="px-3 py-2 bg-slate-300 text-slate-600 rounded-lg font-bold" type="submit">
+            Merge and Download
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
