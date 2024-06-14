@@ -1,5 +1,17 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  Hello, World!
+  <div class="absolute inset-0 flex flex-col items-center justify-center">
+    <div class="max-w-3xl w-full">
+      <h2 class="text-4xl font-bold pb-8">
+        Welcome to <span style="color: #8b5cf6;">Clip</span><span style="color: #0369a1;">Fusion</span>!
+      </h2>
+      <p class="text-xl pt-4 pb-6">
+        Introducing ClipFusion: Seamlessly merge your videos with ease. Save and share your creations effortlessly. Unleash your creativity today!
+      </p>
+      <a href="{{ url_for('video') }}" class="px-3 py-2 bg-slate-300 text-slate-600 rounded-xl font-semibold cursor-pointer">
+        Get Started
+      </a>
+    </div>
+  </div>
 {% endblock %}
