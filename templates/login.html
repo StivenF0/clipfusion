@@ -15,12 +15,14 @@
           class="w-full h-11 rounded-xl px-3 text-zinc-700 focus:outline-none"
           type="text"
           placeholder="Username"
+          name="username"
         />
         <div class="p-2"></div>
         <input
           class="w-full h-11 rounded-xl px-3 text-zinc-700 focus:outline-none"
           type="password"
           placeholder="Password"
+          name="password"
         />
         <div class="p-2"></div>
         <button
@@ -29,7 +31,7 @@
         >
           Sign In
         </button>
-        <div class="pt-3">Doesn't have an account yet? <a href="#" class="font-bold">Register now.</a></div>
+        <div class="pt-3">Doesn't have an account yet? <a href="{{ url_for('register') }}" class="font-bold">Register now.</a></div>
       </form>
     </div>
   </body>
