@@ -2,8 +2,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request, redirect
 from helpers import show_error
 from db.db import Database
+from os import getcwd
+
 
 app = Flask(__name__)
+cwd = getcwd()
 
 @app.route("/")
 @app.route("/index")
@@ -40,7 +43,7 @@ def register():
         
         hash = generate_password_hash(password)
 
-        db = Database()
+        db = Database(cwd)
         db.register_user(username, hash)
         db.close()
 
