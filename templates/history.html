@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <!-- Specific css for table -->
+  <link rel="stylesheet" href="/static/history.css">
+  <!-- Content -->
+  <div class="flex w-full justify-center">
+    <div class="flex flex-col justify-center max-w-3xl w-full pb-8 px-8">
+      <h2 class="text-3xl font-bold my-6 mb-4 text-center">History</h2>
+      <!-- History table -->
+      <table class="table-auto">
+        <thead>
+          <tr>
+            <th>Date and Time</th>
+            <th>Initial Video</th>
+            <th>Second Video</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>06/15/2024</td>
+            <td>Clip01.mp4</td>
+            <td>Clip02.mp4</td>
+          </tr>
+          <tr>
+            <td>06/15/2024</td>
+            <td>Clip01.mp4</td>
+            <td>Clip02.mp4</td>
+          </tr>
+          <tr>
+            <td>06/15/2024</td>
+            <td>Clip01.mp4</td>
+            <td>Clip02.mp4</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
