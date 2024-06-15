@@ -15,6 +15,10 @@ def video():
 def history():
     return render_template("history.html")
 
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
 
 if __name__ == "__main__":
     app.run()
