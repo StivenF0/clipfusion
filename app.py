@@ -7,10 +7,13 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-
 @app.route("/video")
 def video():
     return render_template("video.html")
+
+@app.route("/history")
+def history():
+    return render_template("history.html")
 
 
 if __name__ == "__main__":
