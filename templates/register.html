@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClipFusion</title>
+    <script src="/static/cdn.tailwindcss.min.js"></script>
+  </head>
+  <body class="flex flex-col justify-center items-center min-h-screen bg-slate-700">
+    <div class="w-[26rem] py-6 rounded-3xl border-2 border-400-slate text-slate-300 px-4">
+      <form action="/" onsubmit="(e) => e.preventDefault;">
+        <h2 class="text-5xl font-semibold text-center pb-8">Register</h2>
+        <div class="p-4"></div>
+        <input
+          class="w-full h-11 rounded-xl px-3 text-zinc-700 focus:outline-none"
+          type="text"
+          placeholder="Username"
+          name="username"
+        />
+        <div class="p-2"></div>
+        <input
+          class="w-full h-11 rounded-xl px-3 text-zinc-700 focus:outline-none"
+          type="password"
+          placeholder="Password"
+          name="password"
+        />
+        <div class="p-2"></div>
+        <input
+          class="w-full h-11 rounded-xl px-3 text-zinc-700 focus:outline-none"
+          type="password"
+          placeholder="Confirm password"
+          name="confirmation"
+        />
+        <div class="p-2"></div>
+        <button
+          class="w-full py-2 bg-slate-300 text-slate-600 font-bold text-md rounded-xl"
+          type="submit"
+        >
+          Sign In
+        </button>
+        <div class="pt-3">Already have an account? <a href="{{ url_for('login') }}" class="font-bold">Log in now.</a></div>
+      </form>
+    </div>
+  </body>
+</html>
