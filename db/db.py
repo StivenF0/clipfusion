@@ -23,7 +23,7 @@ class Database:
         self.connection.commit()
     
     def fetchuser_byname(self, name: str):
-        res = self.cursor.execute("SELECT id, name FROM users WHERE name = ?;", (name,))
+        res = self.cursor.execute("SELECT * FROM users WHERE name = ?;", (name,))
         if data := res.fetchone():
             return data
         return None
