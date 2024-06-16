@@ -14,10 +14,16 @@
       </a>
     </div>
     <div>
-      <ul class="flex gap-4 text-slate-300 text-lg font-semibold underline">
-        <li><a href="{{ url_for('video') }}">Merge Videos</a></li>
-        <li><a href="{{ url_for('history') }}">History</a></li>
-        <li><a class="px-2 py-1 bg-slate-300 text-slate-600 rounded-lg underline" href="{{ url_for('login') }}">Sign In</a></li>
+      <ul class="flex gap-4 text-slate-300 text-lg font-semibold">
+        <li><a class="underline" href="{{ url_for('video') }}">Merge Videos</a></li>
+        <li><a class="underline" href="{{ url_for('history') }}">History</a></li>
+        {% if not session["user_id"] %}
+          <li><a class="px-2 py-1 bg-slate-300 text-slate-600 rounded-lg underline" href="{{ url_for('login') }}">Sign In</a></li>
+        {% else %}
+          <li style="text-decoration: none;">Hello, {{ session["user_name"] }}!</li>
+          <li><a class="px-2 py-1 bg-slate-300 text-slate-600 rounded-lg underline" href="{{ url_for('logout') }}">Log out</a></li>
+        {% endif %}
+        
       </ul>
     </div>
   </header>
