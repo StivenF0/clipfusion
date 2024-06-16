@@ -59,12 +59,15 @@ def register():
         db = Database(cwd)
         
         user = db.fetchuser_byname(username)
-        if user[1] == username:
+        if not user is None and user[1] == username:
             db.close()
             return show_error("Username alredy taken")
         else:
             db.register_user(username, hash)
+            user = db.fetchuser_byname(username)
             db.close()
+        
+        session["user_id"] = user[0]
 
         return redirect("index")
     else:
