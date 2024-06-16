@@ -18,8 +18,14 @@ class Database:
 
     def register_user(self, name: str, password_hash: str) -> None:
         uuid = str(uuid4())
-        self.cursor.execute("INSERT INTO users(id, name, password_hash) VALUES (?, ?, ?)", 
+        self.cursor.execute("INSERT INTO users(id, name, password_hash) VALUES (?, ?, ?);", 
                             (uuid, name, password_hash))
         self.connection.commit()
+    
+    def fetchuser_byname(self, name: str):
+        res = self.cursor.execute("SELECT * FROM users WHERE name = ?;", (name,))
+        if data := res.fetchone():
+            return data
+        return None
     
     
