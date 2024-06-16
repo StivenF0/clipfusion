@@ -44,8 +44,14 @@ def register():
         hash = generate_password_hash(password)
 
         db = Database(cwd)
-        db.register_user(username, hash)
-        db.close()
+        
+        user = db.fetchuser_byname(username)
+        if user[1] == username:
+            db.close()
+            return show_error("Username alredy taken")
+        else:
+            db.register_user(username, hash)
+            db.close()
 
         return redirect("index")
     else:
