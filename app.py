@@ -34,9 +34,30 @@ def video():
 def history():
     return render_template("history.html")
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("login.html")
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if not username:
+            return show_error("Invalid username")
+        if not password:
+            return show_error("Missing password")
+
+        db = Database(cwd)
+        user = db.fetchuser_byname(username)        
+        if user is None:
+            return show_error("User not found")
+        elif not check_password_hash(user[2], password):
+            return show_error("Invalid username or password")
+        
+        session["user_id"] = user[0]
+        session["user_name"] = user[1]
+
+        return redirect("index")
+    else:
+        return render_template("login.html")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -68,10 +89,16 @@ def register():
             db.close()
         
         session["user_id"] = user[0]
+        session["user_name"] = user[1]
 
         return redirect("index")
     else:
         return render_template("register.html")
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("index")
 
 
 if __name__ == "__main__":
