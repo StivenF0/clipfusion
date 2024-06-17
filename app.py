@@ -1,7 +1,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
-from helpers import show_error
+from helpers import show_error, login_required
 from db.db import Database
 from os import getcwd
 
@@ -27,15 +27,19 @@ def index():
     return render_template("index.html")
 
 @app.route("/video")
+@login_required
 def video():
     return render_template("video.html")
 
 @app.route("/history")
+@login_required
 def history():
     return render_template("history.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    session.clear()
+
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
@@ -61,6 +65,8 @@ def login():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    session.clear()
+
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
