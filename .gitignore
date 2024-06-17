@@ -2,4 +2,5 @@ database.db
 flask_session/*
 
 video/*
-!video/.gitkeep
+!video/out/
+video/out/*
