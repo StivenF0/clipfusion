@@ -1,2 +1,5 @@
 database.db
-flask_session/
+flask_session/*
+
+video/*
+!video/.gitkeep
