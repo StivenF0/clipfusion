@@ -11,3 +11,6 @@ def login_required(f):
             return redirect("/login")
         return f(*args, **kwargs)
     return wrapped
+
+def check_video(mime: str):
+    return mime.split("/")[0] == "video"
