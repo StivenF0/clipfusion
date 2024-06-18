@@ -29,9 +29,14 @@ class Database:
         return None
     
     def fetch_history(self, user_id: str):
-        res = self.cursor.execute("SELECT datetime, initial_video, second_video FROM history WHERE user_id = ?", (user_id,))
+        res = self.cursor.execute("SELECT datetime, initial_video, second_video FROM history WHERE user_id = ?;", (user_id,))
         if data := res.fetchall():
             return data
         return None
+    
+    def add_commit(self, user_id: str, initialvideo: str, secondvideo: str):
+        self.cursor.execute("INSERT INTO history(user_id, initial_video, second_video) VALUES (?, ?, ?);", 
+                            (user_id, initialvideo, secondvideo))
+        self.connection.commit()
     
     
