@@ -3,7 +3,7 @@ from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, redirect, session, send_file, url_for
 from flask_session import Session
 from db.db import Database
-from os import getcwd, path
+from os import getcwd, path, remove
 from helpers import show_error, login_required, check_video
 import subprocess
 
@@ -19,6 +19,9 @@ app.config["UPLOAD_FOLDER"] = path.join(cwd, "video")
 
 FFMPEG_LOCAL = "ffmpeg.exe" # ffmpeg name on video folder
 FFMPEG_BINARY = path.join(app.config.get("UPLOAD_FOLDER"), FFMPEG_LOCAL)
+
+OUTPUT_FILE = "output.mp4"
+OUTPUT_DIR = "out"
 
 @app.after_request
 def after_request(response):
@@ -37,6 +40,7 @@ def index():
 @login_required
 def video():
     if request.method == "POST":
+        # Check if initial video and second video exists
         if "initialvideo" not in request.files:
             return show_error("No initial video part on form")
         initial_video = request.files.get("initialvideo")
@@ -44,16 +48,25 @@ def video():
             return show_error("No second video part no form")
         second_video = request.files.get("secondvideo")
 
+        # Check if initial video and second video was selected
         if initial_video.filename == "":
             return show_error("Not selected initial video")
         if second_video.filename == "":
             return show_error("Not selected second video")
         
+        # Check if the uploaded files are videos
         if not check_video(initial_video.mimetype):
             return show_error("Not a video")
         if not check_video(second_video.mimetype):
             return show_error("Not a video")
+        
+        # Get video extensions from files and comparing
+        initialvideo_ext = secure_filename(initial_video.filename).split(".")[-1]
+        secondvideo_ext = secure_filename(second_video.filename).split(".")[-1]
+        if initialvideo_ext != secondvideo_ext:
+            return show_error("Different video extensions")
 
+        # Saving videos to filesystem to be used with ffmpeg
         initial_video.save(path.join(app.config.get("UPLOAD_FOLDER"), secure_filename(initial_video.filename)))
         second_video.save(path.join(app.config.get("UPLOAD_FOLDER"), secure_filename(second_video.filename)))
 
@@ -63,14 +76,19 @@ def video():
             filelist.write(f"file '{secure_filename(initial_video.filename)}'\n")
             filelist.write(f"file '{secure_filename(second_video.filename)}'\n")
 
-        outputfile_name = "output.mp4" # Output video name
-        output_path = path.join(app.config.get("UPLOAD_FOLDER"), "out", outputfile_name) # Path to output video
+        # Path to output video
+        output_path = path.join(app.config.get("UPLOAD_FOLDER"), OUTPUT_DIR, OUTPUT_FILE) 
+
         # Concat video
         subprocess.run([FFMPEG_BINARY, '-f', 'concat', '-safe', '0', '-i',
                     path.join(app.config.get("UPLOAD_FOLDER"), filelist_name), '-c', 'copy', '-y', output_path])
 
+        # Remove video entries
+        remove(path.join(app.config.get("UPLOAD_FOLDER"), secure_filename(initial_video.filename)))
+        remove(path.join(app.config.get("UPLOAD_FOLDER"), secure_filename(second_video.filename)))
+
+        # Download output video
         return redirect("download")
-        # TODO: Reformat the code to be more organized
     else:
         return render_template("video.html")
 
@@ -151,9 +169,7 @@ def logout():
 
 @app.route("/download")
 def download():
-    output_file = "output.mp4"
-    output_folder = "out"
-    return send_file(path.join(app.config.get("UPLOAD_FOLDER"), output_folder, output_file), as_attachment=True)
+    return send_file(path.join(app.config.get("UPLOAD_FOLDER"), OUTPUT_DIR, OUTPUT_FILE), as_attachment=True)
     
 
 
