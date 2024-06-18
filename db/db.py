@@ -1,15 +1,30 @@
 from uuid import uuid4
-from os.path import join as path_join
+from os.path import join, exists
 import sqlite3
 
 
 DB_NAME = "database.db"
 DB_DIR = "db/"
 
-
 class Database:
     def __init__(self, cwd) -> None:
-        self.connection = sqlite3.connect(path_join(cwd, DB_DIR, DB_NAME))
+        db_path = join(cwd, DB_DIR, DB_NAME)
+
+        if (not exists(db_path)):
+            file = open(db_path, "w")
+            file.close()
+
+            conn = sqlite3.connect(db_path)
+            cursor = conn.cursor()
+
+            with open(join(cwd, DB_DIR, "schema.sql"), "r") as sql_script:
+                cursor.executescript(sql_script.read())
+
+            conn.commit()
+            cursor.close()
+            conn.close()
+
+        self.connection = sqlite3.connect(db_path)
         self.cursor = self.connection.cursor()
     
     def close(self) -> None:
