@@ -88,6 +88,11 @@ def video():
         remove(path.join(app.config.get("UPLOAD_FOLDER"), secure_filename(initial_video.filename)))
         remove(path.join(app.config.get("UPLOAD_FOLDER"), secure_filename(second_video.filename)))
 
+        # Add commit to history database
+        db = Database(cwd)
+        db.add_commit(session.get("user_id"), secure_filename(initial_video.filename), secure_filename(second_video.filename))
+        db.close()
+
         # Download output video
         return redirect("download")
     else:
@@ -102,6 +107,7 @@ def history():
         dt = datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S")
         formatted_dt = dt.strftime("%m/%d/%Y, %H:%M")
         history[idx] = (formatted_dt, row[1], row[2])
+    db.close()
     return render_template("history.html", history=history)
 
 @app.route("/login", methods=["GET", "POST"])
@@ -123,6 +129,7 @@ def login():
             return show_error("User not found")
         elif not check_password_hash(user[2], password):
             return show_error("Invalid username or password")
+        db.close()
         
         session["user_id"] = user[0]
         session["user_name"] = user[1]
@@ -177,7 +184,6 @@ def logout():
 @app.route("/download")
 def download():
     return send_file(path.join(app.config.get("UPLOAD_FOLDER"), OUTPUT_DIR, OUTPUT_FILE), as_attachment=True)
-    
 
 
 if __name__ == "__main__":
