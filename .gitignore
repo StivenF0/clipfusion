@@ -1,6 +1,14 @@
+# Ignore database file
 database.db
+
+# Ignore session files
 flask_session/*
 
+# Ignore "video" files
 video/*
-!video/out/
+# Keep "video" directory
+!video/out
+# Ignore content from "out" directory
 video/out/*
+# Keep "out" directory
+!video/out/.gitkeep
