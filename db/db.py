@@ -28,4 +28,10 @@ class Database:
             return data
         return None
     
+    def fetch_history(self, user_id: str):
+        res = self.cursor.execute("SELECT datetime, initial_video, second_video FROM history WHERE user_id = ?", (user_id,))
+        if data := res.fetchall():
+            return data
+        return None
+    
     
