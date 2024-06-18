@@ -5,6 +5,7 @@ from flask_session import Session
 from db.db import Database
 from os import getcwd, path, remove
 from helpers import show_error, login_required, check_video
+from datetime import datetime
 import subprocess
 
 
@@ -95,7 +96,13 @@ def video():
 @app.route("/history")
 @login_required
 def history():
-    return render_template("history.html")
+    db = Database(cwd)
+    history = db.fetch_history(session.get("user_id"))
+    for idx, row in enumerate(history):
+        dt = datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S")
+        formatted_dt = dt.strftime("%m/%d/%Y, %H:%M")
+        history[idx] = (formatted_dt, row[1], row[2])
+    return render_template("history.html", history=history)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

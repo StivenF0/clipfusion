@@ -17,21 +17,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>06/15/2024</td>
-            <td>Clip01.mp4</td>
-            <td>Clip02.mp4</td>
-          </tr>
-          <tr>
-            <td>06/15/2024</td>
-            <td>Clip01.mp4</td>
-            <td>Clip02.mp4</td>
-          </tr>
-          <tr>
-            <td>06/15/2024</td>
-            <td>Clip01.mp4</td>
-            <td>Clip02.mp4</td>
-          </tr>
+          {% for row in history %}
+            <tr>
+              <td>{{ row[0] }}</td>
+              <td>{{ row[1] }}</td>
+              <td>{{ row[2] }}</td>
+            </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
